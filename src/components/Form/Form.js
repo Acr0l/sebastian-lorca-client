@@ -7,7 +7,6 @@ import useStyles from './styles.js';
 
 const Form = ({ currentId, setCurrentId }) => {
   const [postData, setPostData] = useState({
-    creator: '',
     title: '',
     content: '',
     tags: '',
@@ -18,28 +17,41 @@ const Form = ({ currentId, setCurrentId }) => {
   );
   const dispatch = useDispatch();
   const classes = useStyles();
-
+  const user = JSON.parse(localStorage.getItem('profile'));
+  console.log(user?.result?.name);
   useEffect(() => {
     if (post) setPostData(post);
   }, [post]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (currentId) {
-      console.log(postData);
-      dispatch(updatePost({ id: currentId, post: postData }));
-    } else dispatch(createPost(postData));
+    if (currentId)
+      dispatch(
+        updatePost({
+          id: currentId,
+          post: { ...postData, name: user?.result?.name },
+        })
+      );
+    else dispatch(createPost({ ...postData, name: user?.result?.name }));
     clear();
   };
+
   const clear = () => {
     setCurrentId(null);
     setPostData({
-      creator: '',
       title: '',
       content: '',
       tags: '',
       selectedFile: '',
     });
   };
+  if (!user?.result?.name)
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          Please sign in to create a post.
+        </Typography>
+      </Paper>
+    );
   return (
     <Paper className={classes.paper}>
       <form
@@ -51,16 +63,6 @@ const Form = ({ currentId, setCurrentId }) => {
         <Typography variant="h6">
           {currentId ? 'Editing' : 'Creating'} a post
         </Typography>
-        <TextField
-          name="creator"
-          variant="outlined"
-          label="Creator"
-          fullWidth
-          value={postData.creator}
-          onChange={(e) =>
-            setPostData({ ...postData, creator: e.target.value })
-          }
-        />
         <TextField
           name="title"
           variant="outlined"
@@ -86,7 +88,10 @@ const Form = ({ currentId, setCurrentId }) => {
           fullWidth
           value={postData.tags}
           onChange={(e) =>
-            setPostData({ ...postData, tags: e.target.value.toLowerCase().split(',') })
+            setPostData({
+              ...postData,
+              tags: e.target.value.toLowerCase().split(','),
+            })
           }
         />
         <div className={classes.fieInput}>
