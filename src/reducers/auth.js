@@ -1,20 +1,21 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import * as api from '../api';
+/* eslint-disable no-unused-vars */
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import * as api from "../api";
 
 export const signin = createAsyncThunk(
-  'auth/signin',
+  "auth/signin",
   async ({ data }) => {
     const response = await api.singIn(data);
     return response.data;
   }
 );
-export const signup = createAsyncThunk('auth/signup', async ({ data }) => {
+export const signup = createAsyncThunk("auth/signup", async ({ data }) => {
   const response = await api.singUp(data);
   return response.data;
 });
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState: {
     authData: null,
     loading: false,
@@ -22,7 +23,7 @@ const authSlice = createSlice({
   },
   reducers: {
     auth(state, action) {
-      localStorage.setItem('profile', JSON.stringify({ ...action?.data }));
+      localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
       state = {
         ...state,
         authData: action.data,
@@ -41,7 +42,7 @@ const authSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(signin.fulfilled, (state, action) => {
-      localStorage.setItem('profile', JSON.stringify({ ...action?.payload }));
+      localStorage.setItem("profile", JSON.stringify({ ...action?.payload }));
       state = {
         ...state,
         authData: action?.payload,
@@ -59,7 +60,7 @@ const authSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(signup.fulfilled, (state, action) => {
-      localStorage.setItem('profile', JSON.stringify({ ...action?.payload }));
+      localStorage.setItem("profile", JSON.stringify({ ...action?.payload }));
       state = {
         ...state,
         authData: action.payload,

@@ -1,24 +1,23 @@
-import { Button, Paper, TextField, Typography } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
-import FileBase from 'react-file-base64';
-import { useDispatch, useSelector } from 'react-redux';
-import { createPost, updatePost } from '../../reducers/posts.js';
-import useStyles from './styles.js';
+import { Button, Paper, TextField, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import FileBase from "react-file-base64";
+import { useDispatch, useSelector } from "react-redux";
+import { createPost, updatePost } from "../../reducers/posts.js";
+import useStyles from "./styles.js";
 
 const Form = ({ currentId, setCurrentId }) => {
   const [postData, setPostData] = useState({
-    title: '',
-    content: '',
-    tags: '',
-    selectedFile: '',
+    title: "",
+    content: "",
+    tags: "",
+    selectedFile: "",
   });
   const post = useSelector((state) =>
     currentId ? state.posts.posts.find((p) => p._id === currentId) : null
   );
   const dispatch = useDispatch();
   const classes = useStyles();
-  const user = JSON.parse(localStorage.getItem('profile'));
-  console.log(user?.result?.name);
+  const user = JSON.parse(localStorage.getItem("profile"));
   useEffect(() => {
     if (post) setPostData(post);
   }, [post]);
@@ -38,10 +37,10 @@ const Form = ({ currentId, setCurrentId }) => {
   const clear = () => {
     setCurrentId(null);
     setPostData({
-      title: '',
-      content: '',
-      tags: '',
-      selectedFile: '',
+      title: "",
+      content: "",
+      tags: "",
+      selectedFile: "",
     });
   };
   if (!user?.result?.name)
@@ -61,7 +60,7 @@ const Form = ({ currentId, setCurrentId }) => {
         onSubmit={handleSubmit}
       >
         <Typography variant="h6">
-          {currentId ? 'Editing' : 'Creating'} a post
+          {currentId ? "Editing" : "Creating"} a post
         </Typography>
         <TextField
           name="title"
@@ -90,7 +89,7 @@ const Form = ({ currentId, setCurrentId }) => {
           onChange={(e) =>
             setPostData({
               ...postData,
-              tags: e.target.value.toLowerCase().split(','),
+              tags: e.target.value.toLowerCase().split(","),
             })
           }
         />

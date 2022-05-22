@@ -5,25 +5,25 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Typography,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
-import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
+  Typography
+} from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
+import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 // Dependencies
-import moment from 'moment';
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import moment from "moment";
+import React from "react";
+import { useDispatch } from "react-redux";
 // Reducer
-import { deletePost, likePost } from '../../../reducers/posts.js';
-import useStyles from './styles.js';
+import { deletePost, likePost } from "../../../reducers/posts.js";
+import useStyles from "./styles.js";
 
 export default function Post({ post, setCurrentId }) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const user = JSON.parse(localStorage.getItem('profile'));
+  const user = JSON.parse(localStorage.getItem("profile"));
 
   const Likes = () => {
     if (post.likes.length > 0) {
@@ -33,12 +33,12 @@ export default function Post({ post, setCurrentId }) {
           &nbsp;
           {post.likes.length > 2
             ? `You and ${post.likes.length - 1} others`
-            : `${post.likes.length} like${post.likes.length > 1 ? 's' : ''}`}
+            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
         </>
       ) : (
         <>
           <ThumbUpAltOutlinedIcon fontSize="small" />
-          &nbsp;{post.likes.length} {post.likes.length === 1 ? 'Like' : 'Likes'}
+          &nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
         </>
       );
     }
@@ -49,12 +49,12 @@ export default function Post({ post, setCurrentId }) {
     );
   };
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} raised elevation={6}>
       <CardMedia
         className={classes.media}
         image={
           post.selectedFile ||
-          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Foriginal%2FbvpI11RJbE6lHSWCrhvNC1S1MtO.jpg&f=1&nofb=1'
+          "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Foriginal%2FbvpI11RJbE6lHSWCrhvNC1S1MtO.jpg&f=1&nofb=1"
         }
         title={post.title}
       />
@@ -67,7 +67,7 @@ export default function Post({ post, setCurrentId }) {
       {user?.result?._id === post?.creator && (
         <div className={classes.overlay2}>
           <Button
-            style={{ color: 'white' }}
+            style={{ color: "white" }}
             size="small"
             onClick={() => {
               setCurrentId(post._id);

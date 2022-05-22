@@ -1,7 +1,7 @@
-import { Grid, IconButton, InputAdornment, TextField } from '@material-ui/core';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import React from 'react';
+import { Grid, IconButton, InputAdornment, TextField } from "@material-ui/core";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import React from "react";
 const Input = ({
   name,
   half,
@@ -20,19 +20,20 @@ const Input = ({
         variant="outlined"
         required
         fullWidth
+        // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus={autoFocus}
         type={type}
         InputProps={
-          name === 'password'
+          name === "password"
             ? {
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={handleShowPassword}>
-                      {type === 'password' ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleShowPassword}>
+                    {type === "password" ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }
             : null
         }
       />

@@ -1,21 +1,22 @@
-import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link, useHistory, useLocation } from 'react-router-dom';
-import { logoutUser } from '../../reducers/auth.js';
-import useStyles from './styles.js';
-import decode from 'jwt-decode';
+import { AppBar, Avatar, Button, Toolbar, Typography } from "@material-ui/core";
+import decode from "jwt-decode";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import { logoutUser } from "../../reducers/auth.js";
+import useStyles from "./styles.js";
+// import logo from "../../images/V-156.JPG";
 
 const Navbar = () => {
   const classes = useStyles();
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
 
   const logout = () => {
     dispatch(logoutUser());
-    history.push('/');
+    history.push("/");
     setUser(null);
   };
 
@@ -27,7 +28,7 @@ const Navbar = () => {
       const decoded = decode(token);
       if(decoded.exp * 1000 < new Date().getTime()) logout();
     }
-    setUser(JSON.parse(localStorage.getItem('profile')));
+    setUser(JSON.parse(localStorage.getItem("profile")));
   }, [location]);
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
@@ -41,6 +42,7 @@ const Navbar = () => {
         >
           Blog
         </Typography>
+        {/* <img component={Link} to="/" src={logo} alt="logo" height="60" className={classes.brand} /> */}
       </div>
       <Toolbar className={classes.toolbar}>
         {user ? (
