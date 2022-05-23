@@ -6,8 +6,12 @@ import useStyles from "./styles.js";
 
 const Posts = ({ setCurrentId }) => {
   const classes = useStyles();
-  const { posts } = useSelector((state) => state.posts);
-  return !posts.length ? (
+  const { posts, loading } = useSelector((state) => state.posts);
+
+  console.log(loading);
+  if (!posts.length && loading) return "No posts";
+
+  return (loading == "pending") ? (
     <CircularProgress />
   ) : (
     <Grid

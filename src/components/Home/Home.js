@@ -7,10 +7,10 @@ import {
   TextField
 } from "@material-ui/core";
 import ChipInput from "material-ui-chip-input";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
-import { fetchPosts, fetchPostsBySearch } from "../../reducers/posts.js";
+import { fetchPostsBySearch } from "../../reducers/posts.js";
 import Form from "../Form/Form.js";
 import Pagination from "../Pagination.jsx";
 import Posts from "../Posts/Posts.js";
@@ -28,12 +28,8 @@ const Home = () => {
   const dispatch = useDispatch();
   const query = useQuery();
   const history = useHistory();
-  // const page = query.get("page") || 1;
+  const page = query.get("page") || 1;
   const searchQuery = query.get("searchQuery") || "";
-
-  useEffect(() => {
-    dispatch(fetchPosts());
-  }, [dispatch, currentId]);
 
   const searchPost = () => {
     if (search.trim() || tags.length > 0) {
@@ -87,9 +83,11 @@ const Home = () => {
               <Button onClick={searchPost} variant="contained" className={classes.searchButton} color="primary">Search</Button>
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
-            <Paper elevation={6}>
-              <Pagination />
-            </Paper>
+            {(!searchQuery && !tags.length) && (
+              <Paper elevation={6} className={classes.pagination}>
+                <Pagination page={page} />
+              </Paper>
+            )}
           </Grid>
         </Grid>
       </Container>

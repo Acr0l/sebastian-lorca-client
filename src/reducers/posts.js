@@ -2,9 +2,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import * as api from "../api";
 
-export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  const response = await api.fetchPosts();
-  return response.data;
+export const fetchPosts = createAsyncThunk("posts/fetchPosts", async (page) => {
+  const { data } = await api.fetchPosts(page);
+  console.log(data)
+  return data;
 });
 
 export const fetchPostsBySearch = createAsyncThunk("posts/fetchPostsBySearch", async (searchQuery) => {
@@ -45,6 +46,9 @@ const postsSlice = createSlice({
   initialState: {
     posts: [],
     loading: "idle",
+    error: null,
+    currentPage: 1,
+    numberOfPages: 1,
   },
   reducers: {},
   extraReducers: {
@@ -53,7 +57,10 @@ const postsSlice = createSlice({
     },
     [fetchPosts.fulfilled]: (state, action) => {
       state.loading = "idle";
-      state.posts = action.payload;
+      state.posts = action.payload.data;
+      state.currentPage = action.payload.currentPage;
+      state.numberOfPages = action.payload.numberOfPages;
+
     },
     [fetchPosts.rejected]: (state, action) => {
       state.loading = "idle";
