@@ -9,7 +9,7 @@ import moment from "moment";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { getPost } from "../../reducers/posts.js";
+import { fetchPostsBySearch, getPost } from "../../reducers/posts.js";
 import useStyles from "./styles.js";
 
 const PostDetails = () => {
@@ -24,6 +24,12 @@ const PostDetails = () => {
     dispatch(getPost(id));
   }, [id]);
 
+  useEffect(() => {
+    if (post)
+      dispatch(
+        fetchPostsBySearch({ search: "none", tags: post?.tags.join(",") })
+      );
+  }, [post]);
   if (!post) return null;
 
   if (loading === "pending")
@@ -32,6 +38,11 @@ const PostDetails = () => {
         <CircularProgress size="7em" />
       </Paper>
     );
+
+  const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
+
+  const openPost = (_id) => history.push(`/post/${_id}`);
+
   return (
     <Paper style={{ padding: "20px", borderRadius: "15px" }} elevation={6}>
       <div className={classes.card}>
@@ -48,7 +59,7 @@ const PostDetails = () => {
             {post.tags.map((tag) => `#${tag} `)}
           </Typography>
           <Typography gutterBottom variant="body1" component="p">
-            {post.message}
+            {post.content}
           </Typography>
           <Typography variant="h6">Created by: {post.name}</Typography>
           <Typography variant="body1">
@@ -75,7 +86,43 @@ const PostDetails = () => {
           />
         </div>
       </div>
-      {/* Recommended posts */}
+      {recommendedPosts.length && (
+        <div className={classes.section}>
+          <Typography gutterBottom variant="h5">
+            You might also like:
+          </Typography>
+          <Divider />
+          <div className={classes.recommendedPosts}>
+            {/* TODO: Limit content loaded */}
+            {recommendedPosts.map(
+              ({ title, content, name, likes, selectedFile, _id }) => (
+                <div
+                  style={{ margin: "20px", cursor: "pointer" }}
+                  onClick={() => openPost(_id)}
+                  key={_id}
+                  onKeyDown={() => openPost(_id)}
+                  role="link"
+                  tabIndex={0}
+                >
+                  <Typography gutterBottom variant="h6">
+                    {title}
+                  </Typography>
+                  <Typography gutterBottom variant="subtitle2">
+                    {name}
+                  </Typography>
+                  <Typography gutterBottom variant="subtitle2">
+                    {content}
+                  </Typography>
+                  <Typography gutterBottom variant="subtitle1">
+                    Likes: {likes.length}
+                  </Typography>
+                  <img src={selectedFile} alt={`${name} media`} width="200px" />
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      )}
     </Paper>
   );
 };
