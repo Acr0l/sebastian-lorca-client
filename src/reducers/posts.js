@@ -4,7 +4,6 @@ import * as api from "../api";
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async (page) => {
   const { data } = await api.fetchPosts(page);
-  console.log(data)
   return data;
 });
 
@@ -15,7 +14,6 @@ export const getPost = createAsyncThunk("posts/getPost", async (id) => {
 
 export const fetchPostsBySearch = createAsyncThunk("posts/fetchPostsBySearch", async (searchQuery) => {
   const { data: { data } } = await api.fetchPostsBySearch(searchQuery);
-  console.log(data);
   return data;
 });
 
@@ -76,7 +74,7 @@ const postsSlice = createSlice({
     },
     [createPost.fulfilled]: (state, action) => {
       state.loading = "idle";
-      state.posts.push(action.payload);
+      state.posts.unshift(action.payload);
     },
     [createPost.rejected]: (state, action) => {
       state.loading = "idle";
