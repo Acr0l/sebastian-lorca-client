@@ -8,6 +8,11 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async (page) => {
   return data;
 });
 
+export const getPost = createAsyncThunk("posts/getPost", async (id) => {
+  const { data } = await api.fetchPost(id);
+  return data;
+});
+
 export const fetchPostsBySearch = createAsyncThunk("posts/fetchPostsBySearch", async (searchQuery) => {
   const { data: { data } } = await api.fetchPostsBySearch(searchQuery);
   console.log(data);
@@ -88,7 +93,7 @@ const postsSlice = createSlice({
     },
     [updatePost.rejected]: (state, action) => {
       state.loading = "idle";
-      console.log(action.error.message);
+      state.error = action.error.message;
     },
     [deletePost.pending]: (state, action) => {
       state.loading = "pending";
@@ -99,7 +104,7 @@ const postsSlice = createSlice({
     },
     [deletePost.rejected]: (state, action) => {
       state.loading = "idle";
-      console.log(action.error.message);
+      state.error = action.error.message;
     },
     [likePost.pending]: (state, action) => {
       state.loading = "pending";
@@ -112,7 +117,7 @@ const postsSlice = createSlice({
     },
     [likePost.rejected]: (state, action) => {
       state.loading = "idle";
-      console.log(action.error);
+      state.error = action.error.message;
     },
     [fetchPostsBySearch.pending]: (state, action) => {
       state.loading = "pending";
@@ -123,8 +128,19 @@ const postsSlice = createSlice({
     },
     [fetchPostsBySearch.rejected]: (state, action) => {
       state.loading = "idle";
-      console.log(action.error.message);
-    }
+      state.error = action.error.message;
+    },
+    [getPost.pending]: (state, action) => {
+      state.loading = "pending";
+    },
+    [getPost.fulfilled]: (state, action) => {
+      state.loading = "idle";
+      state.post = action.payload;
+    },
+    [getPost.rejected]: (state, action) => {
+      state.loading = "idle";
+      state.error = action.error.message;
+    },
   },
 });
 
