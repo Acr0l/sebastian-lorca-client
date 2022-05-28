@@ -1,6 +1,6 @@
 import { Container } from "@material-ui/core";
 import React from "react";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Auth from "./components/Auth/Auth.js";
 import Home from "./components/Home/Home.js";
 import Navbar from "./components/Navbar/Navbar.js";
@@ -12,17 +12,26 @@ const App = () => {
     <BrowserRouter>
       <Container maxWidth="xl">
         <Navbar />
-        <Switch>
-          <Route path="/" exact component={() => <Redirect to="/posts" />} />
-          <Route path="/posts" exact component={Home} />
-          <Route path="/posts/search" exact component={Home} />
-          <Route path="/posts/:id" component={PostDetails} />
+        <Routes>
+          <Route path="/" exact element={<Navigate to="/posts" />}/>
+          <Route path="/posts" index exact element={<Home />} />
+          <Route path="/posts/search" exact element={<Home />} />
+          <Route path="/posts/:id" element={<PostDetails />} />
           <Route
             path="/auth"
             exact
-            component={() => (!user ? <Auth /> : <Redirect to="/posts" />)}
+            element={!user ? <Auth /> : <Navigate to="/posts" />}
           />
-        </Switch>
+          <Route
+            path="*"
+            element={() => (
+              <main style={{ padding: "1rem" }}>
+                <p>There&#39;s nothing here!</p>
+              </main>
+            )
+            }
+          />
+        </Routes>
       </Container>
     </BrowserRouter>
   );

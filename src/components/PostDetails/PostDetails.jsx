@@ -7,7 +7,7 @@ import {
 import moment from "moment";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchPostsBySearch, getPost } from "../../reducers/posts.js";
 import CommentSection from "./CommentSection.jsx";
 import useStyles from "./styles.js";
@@ -19,7 +19,7 @@ const PostDetails = () => {
 
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(getPost(id));
   }, [id]);
@@ -41,7 +41,7 @@ const PostDetails = () => {
 
   const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
 
-  const openPost = (_id) => history.push(`/post/${_id}`);
+  const openPost = (_id) => navigate(`/post/${_id}`);
 
   return (
     <Paper style={{ padding: "20px", borderRadius: "15px" }} elevation={6}>

@@ -9,7 +9,7 @@ import {
 import ChipInput from "material-ui-chip-input";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { fetchPostsBySearch } from "../../reducers/posts.js";
 import Form from "../Form/Form.js";
 import Pagination from "../Pagination.jsx";
@@ -24,19 +24,22 @@ const Home = () => {
   const [currentId, setCurrentId] = useState(0);
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
+  
   const classes = useStyles();
+  
   const dispatch = useDispatch();
   const query = useQuery();
-  const history = useHistory();
+  const navigate = useNavigate();
+
   const page = query.get("page") || 1;
   const searchQuery = query.get("searchQuery") || "";
 
   const searchPost = () => {
     if (search.trim() || tags.length > 0) {
       dispatch(fetchPostsBySearch({search, tags: tags.join(",")})); 
-      history.push(`/posts/search?searchQuery=${search || "none"}&tags=${tags.join(",")}`);
+      navigate(`/posts/search?searchQuery=${search || "none"}&tags=${tags.join(",")}`);
     }	
-    else history.push("/");
+    else navigate.push("/");
   }
 
   const handleKeyDown = (e) => {

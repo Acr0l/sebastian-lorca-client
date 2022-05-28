@@ -12,38 +12,47 @@ import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 // Dependencies
 import moment from "moment";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // Reducer
 import { deletePost, likePost } from "../../../reducers/posts.js";
 import useStyles from "./styles.js";
 
 export default function Post({ post, setCurrentId }) {
-  const classes = useStyles();
-  const dispatch = useDispatch();
-  const history = useHistory();
-
   const user = JSON.parse(localStorage.getItem("profile"));
-
-  const openPost = () => 
-    history.push("/posts/" + post._id);
   
+  const classes = useStyles();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [likes, setLikes] = useState(post?.likes);
+
+  const hasLikedPost = post.likes.find((like) => like === user?.result?._id);
+  const openPost = () => 
+    navigate("/posts/" + post._id);
+  
+  const handleLike = async (e) => {
+    e.preventDefault();
+    dispatch(likePost(post._id))
+    if (hasLikedPost) setLikes(post.likes.filter((id) => id !== user?.result?._id));
+    else setLikes([...post.likes, user?.result?._id]);
+  }
 
   const Likes = () => {
-    if (post.likes.length > 0) {
-      return post.likes.find((like) => like === user?.result?._id) ? (
+    if (likes.length > 0) {
+      return likes.find((like) => like === user?.result?._id) ? (
         <>
           <ThumbUpAltIcon fontSize="small" />
           &nbsp;
-          {post.likes.length > 2
-            ? `You and ${post.likes.length - 1} others`
-            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+          {likes.length > 2
+            ? `You and ${likes.length - 1} others`
+            : `${likes.length} like${likes.length > 1 ? "s" : ""}`}
         </>
       ) : (
         <>
           <ThumbUpAltOutlinedIcon fontSize="small" />
-          &nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
+          &nbsp;{likes.length} {likes.length === 1 ? "Like" : "Likes"}
         </>
       );
     }
@@ -107,7 +116,7 @@ export default function Post({ post, setCurrentId }) {
           size="small"
           color="primary"
           disabled={!user?.result}
-          onClick={() => dispatch(likePost(post._id))}
+          onClick={handleLike}
         >
           <Likes />
         </Button>

@@ -6,7 +6,6 @@ export const signin = createAsyncThunk(
   "auth/signin",
   async ({ data }) => {
     const response = await api.singIn(data);
-    console.log(response.data)
     return response.data;
   }
 );

@@ -10,7 +10,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { unwrapResult } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { signin, signup } from "../../reducers/auth.js";
 import Input from "./Input.js";
 import useStyles from "./styles.js";
@@ -26,7 +26,7 @@ const initialState = {
 const Auth = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
@@ -38,13 +38,13 @@ const Auth = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isSignUp) {
-      dispatch(signup({ data: formData, history }))
+      dispatch(signup({ data: formData }))
         .then(unwrapResult)
-        .then(() => history.push("/"));
+        .then(() => navigate("/"));
     } else {
-      dispatch(signin({ data: formData, history }))
+      dispatch(signin({ data: formData }))
         .then(unwrapResult)
-        .then(() => history.push("/"));
+        .then(() => navigate("/"));
     }
   };
   const handleChange = (e) => {
