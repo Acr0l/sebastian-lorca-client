@@ -6,6 +6,7 @@ export const signin = createAsyncThunk(
   "auth/signin",
   async ({ data }) => {
     const response = await api.singIn(data);
+    console.log(response.data)
     return response.data;
   }
 );
@@ -72,7 +73,7 @@ const authSlice = createSlice({
     });
     builder.addCase(signup.rejected, (state, action) => {
       state.loading = false;
-      state.errors = action.error.message;
+      state.errors.push(action.error.message);
     });
   },
 });

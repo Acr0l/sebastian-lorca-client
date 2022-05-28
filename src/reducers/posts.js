@@ -44,6 +44,12 @@ export const likePost = createAsyncThunk("posts/likePost", async (id) => {
   return response.data;
 });
 
+export const commentPost = createAsyncThunk("posts/commentPost", async ({postId, comment}) => {
+  console.log("during")
+  const { data } = await api.comment(postId, comment);
+  return data;
+})
+
 const postsSlice = createSlice({
   name: "posts",
   initialState: {
@@ -139,8 +145,22 @@ const postsSlice = createSlice({
       state.loading = "idle";
       state.error = action.error.message;
     },
+    [commentPost.pending]: (state, action) => {
+      state.loading = "pending";
+    },
+    [commentPost.fulfilled]: (state, action) => {
+      state.loading = "idle";
+      state.posts = state.posts.map((post) =>
+        post._id === action.payload._id ? action.payload : post
+      );
+    },
+    [commentPost.rejected]: (state, action) => {
+      state.loading = "idle";
+      state.error = action.error.message;
+    }
   },
 });
+
 
 // export const { addPost, removePost, fetchAllPosts } = postsSlice.actions;
 export default postsSlice.reducer;

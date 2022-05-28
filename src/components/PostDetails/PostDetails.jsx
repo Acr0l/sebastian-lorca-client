@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   CircularProgress,
   Divider,
@@ -10,6 +9,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { fetchPostsBySearch, getPost } from "../../reducers/posts.js";
+import CommentSection from "./CommentSection.jsx";
 import useStyles from "./styles.js";
 
 const PostDetails = () => {
@@ -70,9 +70,7 @@ const PostDetails = () => {
             <strong>Realtime Chat - coming soon!</strong>
           </Typography>
           <Divider style={{ margin: "20px 0" }} />
-          <Typography variant="body1">
-            <strong>Comments - coming soon!</strong>
-          </Typography>
+          <CommentSection post={post} />
           <Divider style={{ margin: "20px 0" }} />
         </div>
         <div className={classes.imageSection}>

@@ -56,6 +56,7 @@ export default function Post({ post, setCurrentId }) {
   return (
     <Card className={classes.card} raised elevation={6}>
       <ButtonBase
+        component="span"
         className={classes.cardAction}
         onClick={openPost}
       >
@@ -83,7 +84,7 @@ export default function Post({ post, setCurrentId }) {
                 setCurrentId(post._id);
               }}
             >
-              <MoreHorizIcon fontSize="default" />
+              <MoreHorizIcon fontSize="medium" />
             </Button>
           </div>
         )}
