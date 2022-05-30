@@ -10,7 +10,7 @@ import {
   CarouselItemText,
   CarouselItemTitle,
   CarouselMobileScrollNode,
-} from "./TimeLineStyles";
+} from "./TimelineStyles";
 import {
   Section,
   SectionDivider,
@@ -26,7 +26,7 @@ const Timeline = () => {
   const carouselRef = useRef();
 
   const scroll = (node, left) => {
-    return node.scrollTo({ left, behavior: 'smooth' });
+    return node.scrollTo({ left, behavior: "smooth" });
   }
 
   const handleClick = (e, i) => {
@@ -56,7 +56,7 @@ const Timeline = () => {
       scroll(carouselRef.current, 0);
     }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
   }, []);
 
   return (
